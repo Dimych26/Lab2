@@ -16,39 +16,47 @@ namespace Lab2.Controllers
     {
 
         private IKitchen service;
+        private Cart cart;
         //private IOrderProcessor orderProcessor;
 
-        public CartController(IKitchen service)
+        public CartController(IKitchen service,Cart cart)
         {
             this.service = service;
+            this.cart = cart;
             
         }
 
-        public IActionResult Index(Cart cart)
+        public IActionResult Index()
         {
-
+            //var car = TempData.Get<Cart>("cart");
+            var items = cart.GetCartItems();
+            cart.Lines = items;
             CartViewModel model = new CartViewModel
             {
                 Cart = cart,
-                ReturnUrl = ""
+               // ReturnUrl = ""
             };
             return View(model);
         }
 
 
-        [HttpPost]
-        public IActionResult AddToCart(Cart cart,int dishId, string returnUrl)
+
+
+        
+        public RedirectToActionResult AddToCart(int dishId)
         {
             Dish dish = service.GetDish(dishId).Result;
             
-            Cart newcart;
+           // Cart newcart;
             if (dish != null)
             {
-                cart.AddItem(dish, 1);
-                newcart = cart;
+                // cart.AddItem(dish, 1);
+                cart.AddToCart(dish, 1);
+                //newcart = cart;
+                //TempData.Set("cart", cart);
             }
 
-            return RedirectToAction("Index",  new {  });
+            return RedirectToAction("Index");
 
         }
         [HttpPost]
@@ -68,7 +76,7 @@ namespace Lab2.Controllers
             Cart cart = HttpContext.Session.Get<Cart>("Cart");
             if (cart == null)
             {
-                cart = new Cart();
+               // cart = new Cart();
                 HttpContext.Session.Set("Cart", cart);
             }
             return cart;

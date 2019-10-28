@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Lab2.Interfaces;
 using Lab2.Models;
 using Lab2.Services;
+using Lab2.Models.Cart;
 
 namespace Lab2
 {
@@ -43,27 +44,35 @@ namespace Lab2
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<User>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
                
 
             services.AddTransient<IKitchen, Kitchen>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IStorageService, StorageService>();
+            services.AddTransient<IOrderService, OrderService>();
             services.AddDistributedMemoryCache();
             
             
             services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sp => Cart.GetCart(sp));
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddSessionStateTempDataProvider();
-            services.AddSession(options =>
-            {
-                // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(3600);
-                options.Cookie.IsEssential = true;
+
+            services.AddMemoryCache();
+            services.AddSession();
+            //(options =>
+            //{
+            //    // Set a short timeout for easy testing.
+            //    options.IdleTimeout = TimeSpan.FromSeconds(3600);
+            //    options.Cookie.IsEssential = true;
 
 
-            });
+            //});
 
         }
 

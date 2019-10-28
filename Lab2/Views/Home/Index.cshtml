@@ -1,4 +1,5 @@
-﻿@model Lab2.ViewModels.Home.IndexViewModel
+﻿
+@model Lab2.ViewModels.Home.IndexViewModel
 @*@Scripts.Render("~/bundles/jquery")*@
 @{
     Layout = null;
@@ -7,20 +8,18 @@
 <html>
 <head>
     <title>MedCaffe</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <link href="css/font.css" rel="stylesheet" type="text/css" />
-
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/font.css" rel="stylesheet" type="text/css" />
     <!--<meta charset="utf-8" />-->
 </head>
 <body>
-   
+
     <div class="verh">
         <button class="draw" onclick="@("window.location.href='" + @Url.Action("GetAll", "Kitchen") + "'");">Меню</button>
         <button class="draw">Категории</button>
         <div class="flip-container1" ontouchstart="this.classList.toggle('hover');">
             <div class="flipper1">
                 <div class="logo">
-
                     <!-- front content -->
                 </div>
                 <div class="logo1"></div>
@@ -55,7 +54,6 @@
         </div>
         <img class="tt1" src="images/tt1.png" />
     </div>
-
     <div class="catalog">
         <div class="nad6">Каталог</div>
         <div class="kateg">
@@ -67,68 +65,68 @@
         <div style="display: none;" class="fir" id="fir" onclick="@("window.location.href='" + @Url.Action("GetAll", "Kitchen") + "'");">Блюдо</div>
         <div style="display: none;" class="sec" id="sec" onclick="@("window.location.href='" + @Url.Action("GetProductAll", "Product") + "'");">Продукты</div>
         <div class="product-block">
-            <div class="product">
-                <div class="product-image">
-                    <img class="kartinka" src="images/vkusno.png" />
-                </div>
-                <div>
-                    <div class="e30 "></div>
-                    <div class="hto100">ЦВЕТ-РАЗМЕР</div>
+            @foreach (var item in Model.Dishes)
+            {
+                <div class="product">
 
-                    <div class="opis">
-                        <div class="name">PPP</div>
-                        <div class="tsena">100uhy</div>
+                    <div class="product-image">
+                        <img class="kartinka" src="images/vkusno.png" />
                     </div>
-                    <div class="basket">В корзину</div>
-                    <div class="nestoit"></div>
-                    @*<div class='box'>
-
-                                    <div class="name">@item.Brand</div>
-
-                                    <div class="product-dop">@item.Dop</div>
-                                    <div id="vortu">
-
-                                        <p class="pizda"><input class="ps_@item.Id+color" name="color1" type="checkbox" value="@item1.Color"> @item1.Color</p>
-
-                                    </div>
-                                    <div id="polbu">
-
-                                        <p><input name="volume1" class="ps_@item.Id+radio" type="radio" value="@item1.Volume  = @item1.Price euro"> @item1.Volume  = @item1.Price euro</p>
-
-                                        <p><input name="volume1" class="ps_@item.Id+radio" type="radio" value="@item1.Volume  = @item1.Price грн"> @item1.Volume  = @item1.Price грн</p>
-
-                                    </div>
-
-                                    <div id="aga">ВЫБОР ЗА ВАМИ</div>
-                                    <div id="smile"></div>
+                    <div>
+                        <div class="e30 "></div>
+                        <div class="hto100">ЦВЕТ-РАЗМЕР</div>
+                        <div class="opis">
+                            <div class="name">@item.Name</div>
+                            <div class="tsena">@item.Price</div>
+                        </div>
+                        <div class="basket">В корзину</div>
+                        <div class="nestoit"></div>
+                        <div class='box'>
 
 
-                                    <div onclick="tocart('@item.Brand', 'ps_@item.Id+_name','ps_@item.Id+_sname', 'ps_@item.Id+_age', 'ps_@item.Id+_size', '@item.Id' )" id="pod">Подтвердить</div>
+                            <div class="name">@item.Name</div>
 
-                                </div>
-                        </div>*@
+                           
+                            <div class="product-dop">@item.Calories</div>
+                            <div id="vortu">
+                                <p class="pizda"><input class="ps_item.Id+color" name="color1" type="checkbox" value="item1.Color"> item1.Color</p>
+                            </div>
+                            <div id="polbu">
+                                <p><input name="volume1" class="ps_item.Id+radio" type="radio" value="item1.Volume  = item1.Price euro"> item1.Volume  = item1.Price euro</p>
+                                <p><input name="volume1" class="ps_item.Id+radio" type="radio" value="item1.Volume  = item1.Price грн"> item1.Volume  = item1.Price грн</p>
+                            </div>
+
+                            <div id="aga">ВЫБОР ЗА ВАМИ</div>
+                            <div id="smile"></div>
+
+
+                            <div onclick="tocart('item.Name', 'item.Price', 'item.Id' )" id="pod">Подтвердить</div>
+                            }
+                        </div>
+                    </div>
+
                 </div>
+            }
+        </div>
+        <div id="us111">
+            <div id="a11"></div>
+            <div onclick="disp(document.getElementById('winbloger'))" id="hto">КОФЕМОЛКИ</div>
+        </div>
+        <div id="winbloger" style="display: none;">
+            <div onclick="disp(document.getElementById('winbloger'))" id="nestoitb">
+                <a href="" class="hto102"></a>
             </div>
-            <div id="us111">
-                <div id="a11"></div>
-                <div onclick="disp(document.getElementById('winbloger'))" id="hto">КОФЕМОЛКИ</div>
-            </div>
-            <div id="winbloger" style="display: none;">
-                <div onclick="disp(document.getElementById('winbloger'))" id="nestoitb">
-                    <a href="" class="hto102"></a>
-                </div>
-                <!-- Картинка крестика -->
+            <!-- Картинка крестика -->
+            <div class="pzdcc">
+                <div class="products-blocker">
+                    <div id="pit">ТЕМПЕРА</div>
+                    @foreach (var item in Model.Dishes)
+                    {
 
-                <div class="pzdcc">
-                    <div class="products-blocker">
-                        <div id="pit">ТЕМПЕРА</div>
-                        @foreach (var item in Model.Dishes)
-                        {
-
-                            <div class="product">
-                                @if (item.Top)
-                                {
-                                    <img style="width: 82px;
+                        <div class="product">
+                            @if (item.Top)
+                            {
+                                <img style="width: 82px;
 
                                                     height: 82px;
 
@@ -137,10 +135,10 @@
                                                     position: absolute;
 
                                                     margin-left: 5%;" src="~/image/ios7-pricetag-outline_icon-icons.com_501932.png" />
-                                }
-                                @if (item.New)
-                                {
-                                    <img style="width: 76px;
+                            }
+                            @if (item.New)
+                            {
+                                <img style="width: 76px;
 
                                                 height: 76px;
 
@@ -149,54 +147,45 @@
                                                 position: absolute;
 
                                                 margin-left: 5.5%;" src="~/image/new_25355.png" />
-                                }
-                                <div class="e30 "></div>
-                                <div class="hto100">ЦВЕТ-РАЗМЕР</div>
-
-                                <div class="opis">
-                                    <div class="name">@item.Name</div>
-                                    <div class="tsena">@item.Price</div>
-                                </div>
-                                <div class="basket">В корзину</div>
-                                <div class="nestoit"></div>
-                                <div class="e30b "></div>
-
-                                <div>
-
-                                    <a href="" class="hto100b">ЦВЕТ-РАЗМЕР</a>
-                                    <div style="margin-left: 27%;" id="nestoit">
-                                        <a href="" class="hto101"></a>
-                                    </div><div id="produc-basketb"><a href="">В КОРЗИНУ</a></div>
-
-
-                                    @*<div onclick="tocart('@item.Name', '@item.Price','s_@item.Id+_sname', 's_@item.Id+_age', 's_@item.Id+_size', '@item.Id' )" id="pod">Подтвердить</div>*@
-                                </div>
+                            }
+                            <div class="e30 "></div>
+                            <div class="hto100">ЦВЕТ-РАЗМЕР</div>
+                            <div class="opis">
+                                <div class="name">@item.Name</div>
+                                <div class="tsena">@item.Price</div>
                             </div>
+                            <div class="basket">В корзину</div>
+                            <div class="nestoit"></div>
+                            <div class="e30b "></div>
+                            <div>
+                                <a href="" class="hto100b">ЦВЕТ-РАЗМЕР</a>
+                                <div style="margin-left: 27%;" id="nestoit">
+                                    <a href="" class="hto101"></a>
+                                </div><div id="produc-basketb"><a href="">В КОРЗИНУ</a></div>
 
+                                @*<div onclick="tocart('@item.Name', '@item.Price','s_@item.Id+_sname', 's_@item.Id+_age', 's_@item.Id+_size', '@item.Id' )" id="pod">Подтвердить</div>*@
+                            </div>
+                        </div>
 
-
-
-                            @*<div class="product-image">
-                                    <img src="/image/@item.Image" alt="forest">
-
+                    
+<div class="product-image">
+                                    <img src = "/image/item.Image" alt="forest">
                                 </div>
-                                <div style="margin-top: 22%;" class="grupovuha">
-                                    <div class="product-name">@item.Brand</div>
-
-                                    <div class="product-price">@item.Price грн</div>
-                                </div>*@
-
+                                <div style = "margin-top: 22%;" class="grupovuha">
+                                    <div class="product-name">item.Brand</div>
+                                    <div class="product-price">item.Price грн</div>
+                                </div>
 
 
-                        }
-                        }
-                        }
-                    </div>
+
+                            }
+                    }
+
                 </div>
             </div>
         </div>
     </div>
-    </div>
+    
     <div class="infa">
         <div class="nad10">Инфо доска</div>
         <div id="carousel">
@@ -221,7 +210,6 @@
                 <label>fac: medcaffe201900</label>
                 <label>insta: medcaffe201900</label>
                 <label>medcaffe201900@gmail.com</label>
-
             </div>
             <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2541.0551028079126!2d30.427687415687586!3d50.44007427947392!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cc19f547785d%3A0xe7e588240239d964!2z0J3QsNGG0LjQvtC90LDQu9GM0L3Ri9C5INCw0LLQuNCw0YbQuNC-0L3QvdGL0Lkg0YPQvdC40LLQtdGA0YHQuNGC0LXRgg!5e0!3m2!1sru!2sua!4v1571565355574!5m2!1sru!2sua"></iframe>
         </div>
@@ -232,7 +220,6 @@
                 <div class="flip-container1" ontouchstart="this.classList.toggle('hover');">
                     <div class="flipper1">
                         <div class="logo">
-
                             <!-- front content -->
                         </div>
                         <div class="logo1"></div>
@@ -265,17 +252,18 @@
                 <label>@@dizaynerOtBoga</label>
                 <label>@@dimonzacompom</label>
                 <label>@@yarikvodila</label>
+
+                
                 <label>@@mironbroyler</label>
             </div>
         </div>
     </div>
 
-
 </body>
 </html>
 <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="js/common.js"></script>
-<script type="text/javascript" src="js/jquery.waterwheelCarousel.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/jquery.waterwheelCarousel.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         var carousel = $("#carousel").waterwheelCarousel({
@@ -369,6 +357,7 @@
             Message: r
         };
 
+       
         $.ajax({
             type: 'POST',
             url: '/api/Send',
@@ -412,20 +401,21 @@
     function getPrices() {
         return JSON.parse(localStorage.getItem('pr'));
     }
-    function tocart(brand1, font1, fontsize1, text1, imsize1, textcolor1, imcolor1, itemid) {
+    function tocart(brand1, price, itemid) {// font1, fontsize1, text1, imsize1, textcolor1, imcolor1, itemid) {
         var brand = brand1 + ' ';
-        var font = 'Шрифт: ' + document.getElementById(font1).value + ' ';
-        var fontsize = 'Размер шрифта: ' + document.getElementById(fontsize1).value + ' ';
-        var text = 'Надпись: ' + document.getElementById(text1).value + ' ';
-        var textcolor = 'Цвет надписи:' + document.getElementById(textcolor1).value + ' ';
-        var imsize = 'Размер картинки: ' + document.getElementById(imsize1).value + ' ';
-        var piccolor;
-        if (imcolor1 == 'Выберите цвет') {
-            piccolor = ' ';
-        }
-        else {
-            piccolor = 'Цвет картинки: ' + document.getElementById(imcolor1).value + ' ';
-        }
+        //var font = 'Шрифт: ' + document.getElementById(font1).value + ' ';
+        //var fontsize = 'Размер шрифта: ' + document.getElementById(fontsize1).value + ' ';
+        //var text = 'Надпись: ' + document.getElementById(text1).value + ' ';
+        //var textcolor = 'Цвет надписи:' + document.getElementById(textcolor1).value + ' ';
+        //var imsize = 'Размер картинки: ' + document.getElementById(imsize1).value + ' ';
+        var price = 'Цена: ' + docum.getElementById(price).value + ' ';
+        //var piccolor;
+        //if (imcolor1 == 'Выберите цвет') {
+        //    piccolor = ' ';
+        //}
+        //else {
+        //    piccolor = 'Цвет картинки: ' + document.getElementById(imcolor1).value + ' ';
+        //}
 
         var radios = document.getElementsByClassName('s_' + itemid + '+radio');
         var radio;
@@ -443,7 +433,7 @@
                 j++;
             }
         }
-        var final = brand + radio.value + '; Гравировка: (' + font + fontsize + text + textcolor + '); Картинка: (' + imsize + piccolor + ')';
+        var final = brand + radio.value;//+ '; Гравировка: (' + font + fontsize + text + textcolor + '); Картинка: (' + imsize + piccolor + ')';
 
         var cart = getCart();
         var ids = getID();

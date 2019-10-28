@@ -4,13 +4,12 @@
         <strong>@Model.Name</strong>
         <span class="pull-right label label-primary">@Model.Price.ToString("# руб")</span>
     </h3>
-    @using (Html.BeginForm("AddToCart", "Cart"))
-    {
+    
         <div class="pull-right">
-            @Html.Hidden("dishId",Model.Id)
-            @Html.Hidden("returnUrl", Context.Request.Headers["Referer"].ToString()) 
-            <input type="submit" class="btn btn-success" value="Добавить в корзину" />
+         
+            
+           <p><a class="btn btn-warning" asp-controller="Cart" asp-action="AddToCart" asp-route-dishId="@Model.Id"> Добавить в корзину</a></p>
         </div>
-    }
+    
     <span class="lead">@Model.Calories</span>
 </div>

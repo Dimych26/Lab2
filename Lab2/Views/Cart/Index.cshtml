@@ -1,7 +1,7 @@
-﻿@model Lab2.ViewModels.Cart.CartViewModel
+﻿ @model Lab2.ViewModels.Cart.CartViewModel
 
 <h2>Ваша корзина</h2>
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th>Кол-во</th>
@@ -35,4 +35,15 @@
 
 <div class="text-center">
     <a class="btn btn-primary" href="@Model.ReturnUrl">Продолжить покупки</a>
+</div>*@
+<div class="container">
+    @foreach (var el in Model.Cart.Lines)
+    {
+    <div class="alert">
+        <b>Название</b>@el.Dish.Name<br />
+        <b>Цена</b>@el.Dish.Price.ToString("# руб")<br />
+    </div>
+    }
+    <hr/>
+    <a class="btn btn-danger" asp-controller="Order" asp-action="Checkout">Оплатить</a>
 </div>

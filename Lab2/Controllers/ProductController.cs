@@ -79,7 +79,7 @@ namespace Lab2.Controllers
         public IActionResult ToKitchenController()
         {
             HttpContext.Session.Set("ListOfProducts", service.GetProductAll().Result);
-           // TempData.Serialize("ListOfProducts", service.GetProductAll().Result);
+            //TempData.Serialize("ListOfProducts", service.GetProductAll().Result);
             //TempData["ListOfProducts"] = service.GetProductAll();
            // TempData.Keep();
             return RedirectToAction("Create", "Kitchen");

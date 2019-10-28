@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<!--Scripts.Render("~/bundles/jquery")-->
+<html>
+
+<head>
+
+    <title>CoffeeShop</title>
+    <link href="/Content/style.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/font.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/animate.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/media-queries.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+
+        function descr() {
+            var k = getID();
+            var l = getCart();
+            for (let i = 0; i < k.length; i++) {
+                document.getElementById('s_' + i).innerHTML = l[i];
+            }
+        }
+        function tosend() {
+            var result = document.getElementById('form_name').value + ' ' + document.getElementById('form_sname').value + ' ' + document.getElementById('form_age').value + '; Почта:' + document.getElementById('form_email').value + '; Адресс:' + document.getElementById('form_addr').value + '; Пожелания: ' + document.getElementById('form_wish').value;
+            result = result + '; Заказ: ';
+            var items = document.getElementsByClassName('item');
+            for (let i = 0; i < items.length; i++) {
+                result = result + document.getElementById('s_' + i).innerHTML + ' Кол-во:' + document.getElementById('s_' + i + '+kolvo').value + '; '
+            }
+            return result;
+        }
+        function sum() {
+            var s = 0;
+            var items = document.getElementsByClassName('item');
+            for (let i = 0; i < items.length; i++) {
+                s = s + parseInt(document.getElementById('s_' + i + '+price').innerHTML) * parseInt(document.getElementById('s_' + i + '+kolvo').value);
+            }
+            return s;
+        }
+        function writesum() {
+            document.getElementById('end_sum').innerHTML = sum() + '  грн';
+        }
+        function minus(i) {
+            if (document.getElementById('s_' + i + '+kolvo').value != 0 || document.getElementById('s_' + i + '+kolvo').value != '0') {
+                document.getElementById('s_' + i + '+kolvo').value = parseInt(document.getElementById('s_' + i + '+kolvo').value) - 1;
+            }
+            writesum();
+        }
+        function plus(i) {
+            document.getElementById('s_' + i + '+kolvo').value = parseInt(document.getElementById('s_' + i + '+kolvo').value) + 1;
+            writesum();
+        }
+        $(window).on('load', function () {
+            descr();
+            writesum();
+        });
+        function getCart() {
+            return JSON.parse(localStorage.getItem('сart'));
+        }
+        function setCart(d) {
+            localStorage.setItem('сart', JSON.stringify(d));
+        }
+        function getID() {
+            return JSON.parse(localStorage.getItem('ids'));
+        }
+        function setID(d) {
+            localStorage.setItem('ids', JSON.stringify(d));
+        }
+        function send() {
+            var r = tosend() + 'Общая сумма:' + sum();
+            var MailViewModel = {
+                Name: $('#form_name').val() + ' ' + $('#form_sname').val(),
+                Email: $('#form_email').val(),
+                Message: r
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/Send',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(MailViewModel),
+                success: function (data) {
+                    alert("Спасибо! Мы ответим Вам, как только увидим Ваше сообщение.");
+                    hideloader();
+                },
+                error: function (data) {
+                    alert("Ошибка сервера. Перезагрузите страницу или напишите на один из доступных Email вручную.");
+                }
+            });
+        }
+        /**/</script>
+
+</head>
+<body>
+    <div class="header111">
+
+        <div class="flip-container1" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper1">
+                <div class="front1 wow flipInX" data-wow-duration="2s">
+                    <!-- front content -->
+                </div>
+                <a href="/Home/index" class="sosi1" style="display:block"><div class="back1"></div></a>
+            </div>
+        </div>
+        <div class="pizdostradanie slideRight">
+            <div class="pizdostradanie1"></div>
+            <div id="tra" class=""></div>
+            <div id="inst1" class="" data-wow-delay="1.5s"><a href="https://www.instagram.com/?hl=ru"></a></div>
+            <div id="tel1" class="" data-wow-delay="2s"><a href="https://web.telegram.org/#/login"></a></div>
+            <div id="vib1" class="" data-wow-delay="2.5s"><a href="https://www.viber.com/ru/"></a></div>
+            <div id="fac1" class="" data-wow-delay="2.5s"><a href="https://www.instagram.com/?hl=ru"></a></div>
+            <div id="adr1" class="" data-wow-delay="1.5s"><a href="https://goo.gl/maps/VxA6igNVdBiBE8QK6">ГОЛОСЕЕВСКАЯ, 17</a></div>
+            <div id="ph1" class="" data-wow-delay="2s">+380634758279</div>
+            <div id="mail1" class="" data-wow-delay="2.5s">truebaristashop@gmail.com</div>
+            <div onclick="cr()" id="kr"><a>Корзина</a></div>
+
+            <div class="Zalupka1">
+                <div id='Left' class=""><a href="/Home/about">О НАС</a></div>
+                <div id='right'><a onclick="disp(document.getElementById('win'))" href="#">СВЯЗЬ С НАМИ</a></div>
+                <div id='tuu' class="" onclick="window.location.reload()"><a href="/Home/index1">ГЛАВНАЯ</a></div>
+                <input id="samtakoy" type="search" name="text" required placeholder="Поиск по сайту" style="margin-top: 20.5%;
+margin-left: -4.8%;
+position: absolute;padding: 5px 2px 5px 25px;
+background: url('http://3.bp.blogspot.com/-4w14hQHr5yQ/Tgm6u7KwUkI/AAAAAAAACAI/Hu2poBOPx3g/s25/search.png') no-repeat scroll 0 50%;
+
+" list="searchlist">
+                @*<datalist id="searchlist">
+                    @foreach (var item in Model)
+                    {
+                        <option id="@item.Id">
+                            @item.Brand
+                        </option>
+                    }*@
+                </datalist>
+                <div id='otz1' class="https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTU2MTI4NzQ4Mjc4NTM4?igshid=lguas52250l8&story_media_id=2040720016432968558"><a href="/Home/comment">ОТЗЫВЫ</a></div>
+                <div id="strayk"></div>
+                <div id="nash">ОСНОВНОЙ МАГАЗИН</div>
+            </div>
+
+
+        </div>
+        <div id="verny">
+            <a href="/home/index1">Продолжить выбор товара</a><img style="margin-top: 16%;
+
+margin-left: 44%;" src="~/image/one-finger-click-black-hand-symbol_icon-icons.com_643501.png" />
+        </div>
+        <div id="window9">
+            <!-- Картинка крестика -->
+
+            <div class="form2">
+                <div id="kor">КОРЗИНА</div>
+                <div id="dogana">
+                    <div id="kor21">ТОВАР</div>
+                    <div id="kor22">ОПИСАНИЕ</div>
+                    <div id="kor23">КОЛИЧЕСТВО</div>
+                    <div id="kor24">ЦЕНА ЗА 1 ШТ.</div>
+                </div>
+                <div class="zinucherzkorzinu">
+                    @if (true)
+                    {
+                        int i = 0;
+                        foreach (var item in Model)
+                        {
+
+                            <div class="komfy">
+                                <img id="kent" style="margin-left: 92%;
+margin-top: 2%;" src="~/image/close.png" />
+                                <div class="item">
+                                    <div class="buttons">
+                                        <span class="delete-btn"></span>
+                                        <span class="like-btn"></span>
+                                    </div>
+
+                                    <div class="image">
+                                        <img id="kart" src="/image/@item.Image" alt="" />
+                                    </div>
+
+                                    <div class="description">
+                                        <span name="descript" id="s_@i"></span>
+                                    </div>
+
+                                    <div class="quantity">
+                                        <button class="plus-btn" onclick="plus('@i')" type="button" name="button">
+                                            <img src="~/image/Plus_icon-icons.com_71848.png" alt="" />
+                                        </button>
+                                        <input type="text" id="s_@i+kolvo" name="name" value="1">
+                                        <button class="minus-btn0" onclick="minus('@i')" type="button" name="button">
+                                            <img src="~/image/minus_111123.png" alt="" />
+                                        </button>
+                                    </div>
+                                    <div id="babki">
+                                        <div id="s_@i+price" class="total-price">@item.Price грн</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            i++;
+                        }
+                    }
+                    <div id="itog">
+                        ИТОГО: <label id="end_sum">грн</label>
+                    </div>
+                    <div id="dan">ДАННЫЕ ДЛЯ ЗАКАЗА</div>
+                    <form id="form2" name="f1">
+
+                        <input type="text" placeholder="ИМЯ" name="email1" id="form_name" class="input1">
+                        <input type="text" placeholder="ФАМИЛИЯ" name="email1" id="form_sname" class="input1">
+                        <input type="text" placeholder="НОМЕР ТЕЛЕФОНА" name="email1" id="form_age" class="input1">
+                        <input type="email" placeholder="ПОЧТА" name="email1" id="form_email" class="input1">
+                        <input type="password" placeholder="АДРЕС" name="pass1" id="form_addr" class="input1">
+                        <input type="password" placeholder="ПОЖЕЛАНИЯ" name="pass1" id="form_wish" class="input1">
+                        <button type="button" style="width:285px" class="input1" sign_in" onclick="send()">ПОДТВЕРДИТЬ</button>
+                        <div id="k1">Мы перезвоним Вам, как только заявка пройдет обработку.</div>
+                        <div id="kkk1">Всем КОФЕ!)</div>
+
+                    </form>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--<div id="car" class=" wow flip" data-wow-duration="2s" data-wow-delay="2s"> You are welcome!!!</div>
+    <div id="co" class="wow slideInLeft" data-wow-duration="3s" data-wow-offset="100"></div>
+    <div id="pl" class="wow fadeIn" data-wow-duration="2s" data-wow-offset="100" data-wow-delay="2s"></div>
+    <div id="ha" class="wow bounceInRight" data-wow-duration="1s" data-wow-offset="100" data-wow-delay="3s"></div>
+    <div id="ra" class="wow fadeIn" data-wow-duration="2s" data-wow-offset="100" data-wow-delay="4s"></div>
+    <div id="tbs" class="wow rotateIn" data-wow-duration="2s" data-wow-offset="100" data-wow-delay="4.5s"></div>-->
+    <!--<div id="han1"></div>
+    <div id="han2"></div>-->
+    <!--<div id="cof"></div>
+    <div id="cof2"></div>-->
+    <!--<div id="ser" class="wow fadeInUp" data-wow-duration="2s" data-wow-offset="100" data-wow-iteration="infinite">Информация</div>-->
+
+
+
+
+
+    <div class="vpizdu">
+
+        <div class="pohuyu">
+            <div id="corcu">
+                <a href="">КОНТАКТЫ</a>
+            </div>
+            <div id="corcau">+380634758279</div>
+            <div id="corcaau">truebaristashop@gmail.com</div>
+            <div id="corcaaaa1">inst: true.barista.shop</div>
+            <div id="corcaaaaa1">fac: true.barista.shop</div>
+            <div id="corcaaau">г. Киев</div>
+            <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2543.256836885158!2d30.51513441568606!3d50.399050879468234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf4aacb053c9%3A0xb50f28c6de2d410a!2z0YPQuy4g0JPQvtC70L7RgdC10LXQstGB0LrQsNGPLCAxNywg0JrQuNC10LIsIDAyMDAw!5e0!3m2!1sru!2sua!4v1565191562062!5m2!1sru!2sua" width="600" height="450" frameborder="0" style="border:15px solid #E1E8EE; border-radius:15px;margin-left:53%; margin-top:3%; position:absolute"></iframe>
+
+
+        </div>
+        <div id="dicu">
+            <div id="zaeballlr">ПЕРЕЙТИ В ШКОЛУ</div>
+            <div id="str22r"></div>
+            <div id="ver"></div>
+            <div id="ver1"></div>
+            <div id="chl">TRUE BARISTA SCHOOL</div>
+            <div id="chll">TRUE BARISTA SHOP</div>
+            <div id="chle">ОСНОВАНО В 2018 ГОДУ</div>
+            <div id="chlen">
+
+                Makszi200015
+            </div>
+            <div id="inst2" class="wow fadeInDown" data-wow-delay="3s"><a href="https://www.instagram.com/?hl=ru"></a></div>
+            <div id="fac2" class="wow fadeInDown" data-wow-delay="5s"><a href="https://www.instagram.com/?hl=ru"></a></div>
+            <div id="tel2" class="wow fadeInDown" data-wow-delay="4s"><a href="https://web.telegram.org/#/login"></a></div>
+            <div id="vib2" class="wow fadeInDown" data-wow-delay="4s"><a href="https://www.viber.com/ru/"></a></div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="/Scripts/common.js"></script>
+<script src="/Scripts/wow.min.js"></script>
+<script>
+    new WOW().init();
+</script>

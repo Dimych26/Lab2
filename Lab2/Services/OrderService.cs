@@ -1,6 +1,7 @@
 ﻿using Lab2.Data;
 using Lab2.Interfaces;
 using Lab2.Models;
+using Lab2.Models.Cart;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,44 +13,63 @@ namespace Lab2.Services
     public class OrderService : IOrderService
     {
         private ApplicationDbContext db;
-        public OrderService(ApplicationDbContext db)
+        private Cart cart;
+        public OrderService(ApplicationDbContext db,Cart cart)
         {
             this.db = db;
+            this.cart = cart;
         }
         public async Task<Order> GetDayOrder()
         {
-            Order order =  await db.Orders.FirstOrDefaultAsync(o => o.Date == DateTime.Now);
+            Order order =  await db.Orders.FirstOrDefaultAsync(o => o.OrderTime == DateTime.Now);
             return order;
         }
 
         public  IEnumerable<Order> GetMonthOrder()
         {
-            IEnumerable<Order> orders = db.Orders.Where(o => o.Date.Month == DateTime.Now.Month);
+            IEnumerable<Order> orders = db.Orders.Where(o => o.OrderTime.Month == DateTime.Now.Month);
             return orders;
         }
 
         public IEnumerable<Order> GetWeekOrder()
         {
             int DaysOfWeek = 7;
-            IEnumerable<Order> orders = db.Orders.Where(o => DateTime.Now.Day - o.Date.Day <= DaysOfWeek);
+            IEnumerable<Order> orders = db.Orders.Where(o => DateTime.Now.Day - o.OrderTime.Day <= DaysOfWeek);
             return orders;
         }
 
-        public async void MakeOrder(Order o)
+        public  void MakeOrder(Order o)
         {
-            Dish dish = await db.Dishes.FirstOrDefaultAsync(d=>d.Id == o.Dish.Id);
+            o.OrderTime = DateTime.Now;
+            db.Orders.Add(o);
+            
+            var items = cart.Lines;
 
-            if (dish != null)
+            foreach(var el in items)
             {
-                Order order = new Order
+                var orderDetail = new OrderDetails()
                 {
-                    Date = DateTime.Now,
-                    Dish = o.Dish,
-                    UserName = o.UserName
+                    DishId = el.Dish.Id,
+                    OrderId = o.Id,
+                    Price = el.Dish.Price
                 };
+                db.OrderDetails.Add(orderDetail);
 
-                db.Orders.Add(order);
             }
+            db.SaveChanges();
+            //Dish dish = await db.Dishes.FirstOrDefaultAsync(d=>d.Id == o.Dish.Id);
+
+            //if (dish != null)
+            //{
+            //    Order order = new Order
+            //    {
+            //        Date = DateTime.Now,
+            //        Dish = o.Dish,
+            //        UserName = o.UserName
+            //    };
+
+            //    db.Orders.Add(order);
+            //}
 
         }
 

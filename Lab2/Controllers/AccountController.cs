@@ -19,24 +19,29 @@ namespace Lab2.Controllers
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-           
+          
         }
         [HttpGet]
         public IActionResult Register()
         {
+
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             
+           
             if (ModelState.IsValid)
             {
                 
                 var user = new User {  UserName = model.Login, Weight=model.Weight, Height=model.Height   };
+
+
+                var result = await userManager.CreateAsync(user, model.Password);
                 await userManager.AddToRoleAsync(user, "User");
                 
-                var result = await userManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
                     // установка куки

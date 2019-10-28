@@ -48,6 +48,35 @@ namespace Lab2.Controllers
             return View(model);
         }
 
+        public ActionResult basket(string ids)
+        {
+            if (ids == null || ids == "")
+            {
+                return View();
+            }
+            else
+            {
+                List<string> l = ids.Split(',').ToList();
+                IEnumerable<Dish> AllDishes = kitchen.GetDishes().Result;
+                    
+                List<Dish> dishes = new List<Dish>();
+                for (int i = 0; i < l.Count; i++)
+                {
+                    foreach (var item in AllDishes)
+                    {
+                        if (item.Id.ToString() == l[i])
+                        {
+                            dishes.Add(item);
+                        }
+
+
+                    }
+                }
+               
+                return View(dishes);
+            }
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

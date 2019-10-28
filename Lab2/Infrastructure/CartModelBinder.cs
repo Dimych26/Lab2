@@ -45,11 +45,11 @@ namespace Lab2.Infrastructure
             return cart;
         }
 
-        
+
 
         private Cart CreateCart()
         {
-            return new Cart();
+            return null;//new Cart();
         }
     }
 }

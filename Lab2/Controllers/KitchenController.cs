@@ -25,7 +25,7 @@ namespace Lab2.Controllers
             this.productService = productService;
         }
         
-        [Authorize(Roles="Admin")]
+       // [Authorize(Roles="Admin")]
         [HttpPost]
         public string Create(int[] model, string Name)
         {
@@ -40,7 +40,7 @@ namespace Lab2.Controllers
             return response;
         }
 
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
         {
@@ -51,7 +51,7 @@ namespace Lab2.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         public IActionResult CreateDish()
         {
             return RedirectToAction("ToKitchenController", "Product");
@@ -77,13 +77,13 @@ namespace Lab2.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         public void EditDish(Dish dish)
         {
              kitchen.EditDish(dish);
         }
 
-        [Authorize(Roles = "Admin")]
+      //  [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             Product product = productService.GetProduct(id).Result;
