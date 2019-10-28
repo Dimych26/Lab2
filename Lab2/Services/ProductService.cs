@@ -1,6 +1,7 @@
 ﻿using Lab2.Data;
 using Lab2.Interfaces;
 using Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,23 @@ namespace Lab2.Services
 {
     public class ProductService : IProductService
     {
-
        private ApplicationDbContext db;
 
         public ProductService(ApplicationDbContext db)
         {
             this.db = db;
         }
-        public async void Create(Product product)
+        public  void Create(Product product)
         {
-            await db.Products.AddAsync(product);
-            await db.SaveChangesAsync();
+             db.Products.Add(product);
+             db.SaveChanges();
         }
 
-        public async void Edit(Product prod)
+        [Authorize(Roles ="Admin")]
+        public  void Edit(Product prod)
         {
             db.Products.Update(prod);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
         }
 
         public async Task<Product> GetProduct(int? id)

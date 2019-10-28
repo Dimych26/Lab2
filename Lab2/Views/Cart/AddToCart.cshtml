@@ -1,0 +1,40 @@
+﻿@model Lab2.Models.Cart.Cart
+
+@{
+    Layout = null;
+}
+<table class="table">
+<thead>
+    <tr>
+        <th>Кол-во</th>
+        <th>Заказ</th>
+        <th class="text-right">Цена</th>
+        <th class="text-right">Общая цена</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var line in Model.Lines)
+    {
+        <tr>
+            <td class="text-center">@line.Quantity</td>
+            <td class="text-left">@line.Dish.Name</td>
+            <td class="text-right">@line.Dish.Price.ToString("# грн")</td>
+            <td class="text-right">
+                @((line.Quantity * line.Dish.Price).ToString("# руб"))
+            </td>
+        </tr>
+    }
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="3" class="text-right">Итого:</td>
+        <td class="text-right">
+            @Model.ComputeTotalValue().ToString("# руб")
+        </td>
+    </tr>
+</tfoot>
+</table>
+
+<div class="text-center">
+    <a class="btn btn-primary" href="">Продолжить покупки</a>
+</div>

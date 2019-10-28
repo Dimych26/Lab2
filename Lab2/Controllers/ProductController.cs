@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lab2.Data;
+using Lab2.Extensions;
 using Lab2.Interfaces;
 using Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Session;
 
 namespace Lab2.Controllers
 {
     public class ProductController : Controller
     {
-        //ApplicationDbContext db;
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        
         IProductService service;
 
         public ProductController(IProductService service)
@@ -24,10 +24,17 @@ namespace Lab2.Controllers
             this.service = service;
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public  void Create(Product product)
         {
+            if(product!=null)
              service.Create(product);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -52,24 +59,32 @@ namespace Lab2.Controllers
             return NotFound();                       
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public void Edit(Product product)
         {
-            service.Edit(product);
+            if (ModelState.IsValid)
+                service.Edit(product);
         }
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if(id!=null)
-        //    {
-        //        Product product = await db.Products.FirstOrDefaultAsync(p => p.Id == id);
-        //        if(product!=null)
-        //        {
-        //            return View(product);
-        //        }
-        //    }
-        //    return NotFound();
-        //}
 
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(int id)
+        {
+            Product product = service.GetProduct(id).Result;
+            if (product != null)
+                return View(product);
+            return NotFound();
+        }
+
+        public IActionResult ToKitchenController()
+        {
+            HttpContext.Session.Set("ListOfProducts", service.GetProductAll().Result);
+           // TempData.Serialize("ListOfProducts", service.GetProductAll().Result);
+            //TempData["ListOfProducts"] = service.GetProductAll();
+           // TempData.Keep();
+            return RedirectToAction("Create", "Kitchen");
+        }
+       
 
     }
 }

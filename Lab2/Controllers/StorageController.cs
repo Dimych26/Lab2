@@ -3,39 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lab2.Data;
+using Lab2.Interfaces;
 using Lab2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lab2.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class StorageController : Controller
     {
         ApplicationDbContext db;
-
-        public StorageController(ApplicationDbContext db)
+        IStorageService service;
+        public StorageController(ApplicationDbContext db,IStorageService service)
         {
             this.db = db;
-        }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-        [HttpPost]
-        public async void Create(int id,int count)
-        {
-            Product product = await db.Products.FirstOrDefaultAsync(p => p.Id == id);
-            product.Count = count;
-            db.Products.Update(product);
-            await db.SaveChangesAsync();
+            this.service = service;
         }
 
-        public async Task<IActionResult> GetAll()
+        [HttpPost]
+        public  void Create(int id,int count)
         {
-            IEnumerable<Product> products = await db.Products.ToListAsync();
+            service.AddProduct(id, count);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetAll()
+        {
+            IEnumerable<Product> products = service.GetAllProducts();
             if (products != null)
                 return View(products);
             return NotFound();
+        }
+
+        public IActionResult Get(int id)
+        {
+            Product product = service.GetProduct(id);
+            if (product != null)
+                return View(product);
+            return NotFound();
+        }
+
+        public void Edit(Product product)
+        {
+            if(ModelState.IsValid)
+                service.Edit(product);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View();
         }
 
     }

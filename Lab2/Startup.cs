@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Lab2.Interfaces;
 using Lab2.Models;
+using Lab2.Services;
 
 namespace Lab2
 {
@@ -32,19 +33,38 @@ namespace Lab2
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+           
             services.AddDbContext<ApplicationDbContext>(options =>
+            
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+
+            services.AddDefaultIdentity<User>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+               
 
             services.AddTransient<IKitchen, Kitchen>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IStorageService, StorageService>();
+            services.AddDistributedMemoryCache();
+            
+            
+            services.AddHttpContextAccessor();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddSessionStateTempDataProvider();
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(3600);
+                options.Cookie.IsEssential = true;
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +74,7 @@ namespace Lab2
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                
             }
             else
             {
@@ -64,8 +85,13 @@ namespace Lab2
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
+            
+            
 
             app.UseAuthentication();
+            
+            
 
             app.UseMvc(routes =>
             {
