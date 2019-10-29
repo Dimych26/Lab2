@@ -46,7 +46,9 @@ namespace Lab2
             services.AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-               
+            //services.AddIdentity<User, IdentityRole>()
+            //        .AddEntityFrameworkStores<ApplicationDbContext>()
+            //        .AddDefaultTokenProviders();
 
             services.AddTransient<IKitchen, Kitchen>();
             services.AddTransient<IProductService, ProductService>();

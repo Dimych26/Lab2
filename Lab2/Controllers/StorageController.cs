@@ -28,7 +28,7 @@ namespace Lab2.Controllers
             service.AddProduct(id, count);
         }
 
-        [Authorize(Roles = "Admin")]
+        
         public IActionResult GetAll()
         {
             IEnumerable<Product> products = service.GetAllProducts();
@@ -45,15 +45,20 @@ namespace Lab2.Controllers
             return NotFound();
         }
 
+        [HttpPost]
         public void Edit(Product product)
         {
             if(ModelState.IsValid)
                 service.Edit(product);
         }
-
+        
         public IActionResult Edit(int id)
         {
-            return View();
+            Product product = service.GetProduct(id);
+            if (product != null)
+                return View(product);
+            return NotFound();
+            
         }
 
     }

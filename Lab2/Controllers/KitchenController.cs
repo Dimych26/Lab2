@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Lab2.Controllers
 {
+    [Authorize]
     public class KitchenController : Controller
     {
         IKitchen kitchen;
@@ -29,32 +30,44 @@ namespace Lab2.Controllers
         [HttpPost]
         public string Create(int[] model, string Name)
         {
-            string response = "";
-            List<Product> products = new List<Product>();
-            foreach(var item in model)
+            if (User.Identity.Name == "Dima")
             {
-                products.Add(productService.GetProduct(item).Result);
-            }
+                string response = "";
+                List<Product> products = new List<Product>();
+                foreach (var item in model)
+                {
+                    products.Add(productService.GetProduct(item).Result);
+                }
 
-            response =kitchen.CreateDish(products,Name);
-            return response;
+                response = kitchen.CreateDish(products, Name);
+                return response;
+            }
+            return "У вас нет прав";
         }
 
        // [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Create()
         {
-            MultiSelectList list = new MultiSelectList(HttpContext.Session.Get<List<Product>>("ListOfProducts"), "Id", "Name");
-            
-            ViewBag.SelectList = list;
-          
-            return View();
+            if (User.Identity.Name == "Dima")
+            {
+                MultiSelectList list = new MultiSelectList(HttpContext.Session.Get<List<Product>>("ListOfProducts"), "Id", "Name");
+
+                ViewBag.SelectList = list;
+
+                return View();
+            }
+            return NotFound();
         }
+
+       
 
        // [Authorize(Roles = "Admin")]
         public IActionResult CreateDish()
         {
-            return RedirectToAction("ToKitchenController", "Product");
+            if (User.Identity.Name=="Dima")
+                return RedirectToAction("ToKitchenController", "Product");
+            return NotFound();
         }
 
 
@@ -80,15 +93,21 @@ namespace Lab2.Controllers
        // [Authorize(Roles = "Admin")]
         public void EditDish(Dish dish)
         {
-             kitchen.EditDish(dish);
+            if (User.Identity.Name == "Dima")
+                kitchen.EditDish(dish);
+            
         }
 
       //  [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
-            Product product = productService.GetProduct(id).Result;
-            if (product != null)
-                return View(product);
+            if (User.Identity.Name == "Dima")
+            {
+                Product product = productService.GetProduct(id).Result;
+                if (product != null)
+                    return View(product);
+                return NotFound();
+            }
             return NotFound();
         }
 

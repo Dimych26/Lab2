@@ -55,7 +55,7 @@ namespace Lab2.Models
             }
             else
             {
-                response= string.Join("Извините, этих продуктов нет в наличии:", response);
+                response= string.Join("Извините, этих продуктов нет в наличии: ", response);
             }
             return response;
         }
@@ -70,6 +70,12 @@ namespace Lab2.Models
         public async Task<Dish> GetDish(int? id)
         {
             Dish dish = await db.Dishes.FirstOrDefaultAsync(d => d.Id == id);
+            return dish;
+        }
+
+        public async Task<Dish> GetDishByName(string name)
+        {
+            Dish dish = await db.Dishes.FirstOrDefaultAsync(d => d.Name == name);
             return dish;
         }
 

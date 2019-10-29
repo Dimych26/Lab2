@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Session;
 
 namespace Lab2.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         
@@ -24,10 +25,11 @@ namespace Lab2.Controllers
             this.service = service;
         }
 
-        [Authorize(Roles ="Admin")]
+       // [Authorize(Roles ="Admin")]
         [HttpPost]
         public  void Create(Product product)
         {
+           
             if(product!=null)
              service.Create(product);
         }

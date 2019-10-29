@@ -34,7 +34,7 @@ namespace Lab2.Controllers
             CartViewModel model = new CartViewModel
             {
                 Cart = cart,
-               // ReturnUrl = ""
+               
             };
             return View(model);
         }
@@ -50,17 +50,15 @@ namespace Lab2.Controllers
            // Cart newcart;
             if (dish != null)
             {
-                // cart.AddItem(dish, 1);
                 cart.AddToCart(dish, 1);
-                //newcart = cart;
-                //TempData.Set("cart", cart);
+               
             }
 
             return RedirectToAction("Index");
 
         }
         [HttpPost]
-        public IActionResult RemoveFromCart(Cart cart,int dishId, string returnUrl)
+        public IActionResult RemoveFromCart(int dishId)
         {
             Dish dish = service.GetDish(dishId).Result;
 
@@ -68,7 +66,13 @@ namespace Lab2.Controllers
             {
                 cart.RemoveLine(dish);
             }
-            return RedirectToAction("Index", new { returnUrl });
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult RemoveAllFromCart()
+        {
+            cart.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         public Cart GetCart()
