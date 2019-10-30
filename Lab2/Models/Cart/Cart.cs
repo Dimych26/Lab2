@@ -78,14 +78,24 @@ namespace Lab2.Models.Cart
             {
                 ShopCartId = CartId,
                 Dish = dish
-                
-
             });
             context.SaveChanges();
         }
         public List<CartItem> GetCartItems()
         {
             return context.CartItems.Where(c => c.ShopCartId == CartId).Include(s => s.Dish).ToList();
+        }
+
+        public void RemoveAllFromCart()
+        {
+           var some= context.CartItems.Where(c => c.ShopCartId == CartId).Include(s => s.Dish).ToList();
+            for (int i = 0; i < some.Count(); i++)
+            {
+                
+                context.CartItems.Remove(some[i]);
+            }
+            context.SaveChanges();
+            //.Include(s => s.Dish).ToList();
         }
     }
 

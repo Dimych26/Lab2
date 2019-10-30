@@ -65,6 +65,7 @@ namespace Lab2
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddSessionStateTempDataProvider();
 
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
             services.AddMemoryCache();
             services.AddSession();
             //(options =>

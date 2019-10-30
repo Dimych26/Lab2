@@ -17,7 +17,7 @@ namespace Lab2.Controllers
 
         private IKitchen service;
         private Cart cart;
-        //private IOrderProcessor orderProcessor;
+        
 
         public CartController(IKitchen service,Cart cart)
         {
@@ -28,7 +28,7 @@ namespace Lab2.Controllers
 
         public IActionResult Index()
         {
-            //var car = TempData.Get<Cart>("cart");
+            
             var items = cart.GetCartItems();
             cart.Lines = items;
             CartViewModel model = new CartViewModel
@@ -47,7 +47,7 @@ namespace Lab2.Controllers
         {
             Dish dish = service.GetDish(dishId).Result;
             
-           // Cart newcart;
+           
             if (dish != null)
             {
                 cart.AddToCart(dish, 1);
@@ -71,20 +71,20 @@ namespace Lab2.Controllers
 
         public IActionResult RemoveAllFromCart()
         {
-            cart.Clear();
+            cart.RemoveAllFromCart();
             return RedirectToAction("Index", "Home");
         }
 
-        public Cart GetCart()
-        {
-            Cart cart = HttpContext.Session.Get<Cart>("Cart");
-            if (cart == null)
-            {
-               // cart = new Cart();
-                HttpContext.Session.Set("Cart", cart);
-            }
-            return cart;
-        }
+        //public Cart GetCart()
+        //{
+        //    Cart cart = HttpContext.Session.Get<Cart>("Cart");
+        //    if (cart == null)
+        //    {
+        //       // cart = new Cart();
+        //        HttpContext.Session.Set("Cart", cart);
+        //    }
+        //    return cart;
+        //}
         //[HttpPost]
         //public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
         //{

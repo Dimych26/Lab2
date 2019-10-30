@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lab2.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    
     public class StorageController : Controller
     {
         ApplicationDbContext db;
@@ -25,7 +25,9 @@ namespace Lab2.Controllers
         [HttpPost]
         public  void Create(int id,int count)
         {
-            service.AddProduct(id, count);
+            if (User.Identity.Name == "Dima")
+                service.AddProduct(id, count);
+          
         }
 
         
@@ -48,15 +50,22 @@ namespace Lab2.Controllers
         [HttpPost]
         public void Edit(Product product)
         {
-            if(ModelState.IsValid)
-                service.Edit(product);
+            if (User.Identity.Name == "Dima")
+            {
+                if (ModelState.IsValid)
+                    service.Edit(product);
+            }
         }
         
         public IActionResult Edit(int id)
         {
-            Product product = service.GetProduct(id);
-            if (product != null)
-                return View(product);
+            if (User.Identity.Name == "Dima")
+            {
+                Product product = service.GetProduct(id);
+                if (product != null)
+                    return View(product);
+                return NotFound();
+            }
             return NotFound();
             
         }

@@ -1,0 +1,175 @@
+﻿@model Lab2.Models.Product
+@{
+    ViewData["Title"] = "AdPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<img class="da" src="/images/Cool-Male-Avatars-03_34322.png" />
+<div class="namee">Admin</div>
+<div class="infaa">
+
+    <div onclick="disp(document.getElementById('userforms'))" class="glek">Создать блюдо\продукт</div>
+    <div onclick="location.href = 'https://localhost:44344/Home/index'" class="glek1">Перейти в каталог</div>
+    <div onclick="disp(document.getElementById('iz'))" class="glek2">Изменить блюдо\товар</div>
+</div>
+<div onclick="disp(document.getElementById('userforms'))" id="gray" style="display: none;"></div>
+<div class="userforms" id="userforms" style="display:none;">
+    <img class="close1" src="~/images/close.png" alt="" onclick="disp(document.getElementById('userforms'))" />
+    <h3>Добавить товар</h3>
+    <form class="formaa" method="get">
+
+
+        <label for="form_sname">Введите название</label>
+        <input type="text" id="form_product_name" />
+
+
+        <label for="form_phone">Введите вес</label>
+        <input type="text" id="weight" />
+
+
+        <label for="form_phone">Введите цену</label>
+        <input type="text" id="price" />
+
+
+        <label for="form_phone">Введите количество</label>
+        <input type="text" id="count" />
+
+        <label for="form_phone">Введите жиры</label>
+        <input type="text" id="fat" />
+
+        <label for="form_phone">Введите углеводы</label>
+        <input type="text" id="carbohydrates" />
+
+        <label for="form_phone">Введите каллорийность</label>
+        <input type="text" id="calories" />
+
+        <label for="form_phone">Введите белки</label>
+        <input type="text" id="proteins" />
+
+        <label for="form_phone">Введите top</label>
+        <input type="text" id="top" />
+
+        <label for="form_phone">Введите new</label>
+        <input type="text" id="new" />
+
+
+    </form>
+    <input type="button" class="btnom" onclick="MakeProduct()" />
+
+</div>
+<div onclick="disp(document.getElementById('iz'))" id="gray" style="display: none;"></div>
+<div class="products-iz" id="iz" style="display:none">
+    <img class="close1" src="~/images/close.png" alt="" onclick="disp(document.getElementById('iz'))" />
+    <label class="e">Изменить</label>
+    <select></select>
+    <form class="formaa" method="get">
+
+
+        <label for="form_sname">Название</label>
+        <input type="text" id="form_product_name" />
+
+
+        <label for="form_phone">Вес</label>
+        <input type="text" id="weight1" />
+
+
+        <label for="form_phone">Цена</label>
+        <input type="text" id="price1" />
+
+
+        <label for="form_phone">Количество</label>
+        <input type="text" id="count1" />
+
+        <label for="form_phone">Жиры</label>
+        <input type="text" id="fat1" />
+
+        <label for="form_phone">Углеводы</label>
+        <input type="text" id="carbohydrates1" />
+
+        <label for="form_phone">Каллорийность</label>
+        <input type="text" id="calories1" />
+
+        <label for="form_phone">Белки</label>
+        <input type="text" id="proteins1" />
+
+        <label for="form_phone">Top</label>
+        <input type="text" id="top1" />
+
+        <label for="form_phone">New</label>
+        <input type="text" id="new1" />
+        <input type="button" class="btnom" onclick="UpdateProduct()" />
+
+    </form>
+
+
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript">
+
+    function MakeProduct() {
+        var Products = {
+
+            Name: $('#form_product_name').val(),
+            Description: $('#description').val(),
+            Weight: $('#weight').val(),
+            Price: $('#price').val(),
+            Count: $('#count').val(),
+            Fat: $('#fat').val(),
+            Carbohydrates: $('#carbohydrates').val(),
+            Calories: $('#calories').val(),
+            Proteins: $('#proteins').val(),
+            Top: $('#top').val(),
+            New: $('#new').val(),
+        }
+        alert(JSON.stringify(Products));
+
+
+        $.ajax({
+            url: "/Product?handler=Create",// '/Product/OnPostCreate/',
+            type: 'POST',
+           
+            dataType: 'JSON',
+            data: JSON.stringify(Products),
+            contentType: "application/json; charset=utf-8",
+            headers: {
+                RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+            },
+            success: function (data) {
+                alert("Добавлено")
+            },
+            error: function (error) {
+                alert(error.responseText);
+            }
+        });
+    }
+    //function Izmena() {
+    //    var TabacViewModel = {
+
+
+
+    //        Price: $('#price').val(),
+
+
+    //    }
+    //    alert(JSON.stringify(TabacViewModel));
+
+
+    //    $.ajax({
+    //        url: '/api/Tabaco/Update',
+    //        type: 'POST',
+    //        dataType: 'JSON',
+    //        data: JSON.stringify(TabacViewModel),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: function (data) {
+    //            alert("Изменено")
+    //        },
+    //        error: function (error) {
+    //            alert(error.responseText);
+    //        }
+    //    });
+</script>
+

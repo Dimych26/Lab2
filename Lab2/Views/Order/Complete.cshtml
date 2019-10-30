@@ -1,1 +1,2 @@
 ﻿<h3>@ViewBag.Message</h3>
+<input type="submit" value="Вернутся" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("RemoveAllFromCart", "Cart") + "'");"/>

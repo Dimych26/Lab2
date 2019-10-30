@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewData["Title"] = "User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<img class="da" src="/images/Cool-Male-Avatars-03_34322.png" />
+<div class="namee">JJJJJ</div>
+<div class="infaa">
+
+    <div onclick="disp(document.getElementById('his'))" class="glek">Просмотреть историю заказов</div>
+    <div onclick="location.href = 'https://localhost:44344/Home/index'" class="glek1">Перейти в каталог</div>
+    <div onclick="disp(document.getElementById('his2'))" class="glek2">Подсчитать норму каллорий</div>
+</div>
+<div class="forma">
+    <div class="instr">
+        Всем известно, что для того чтобы привести фигуру в порядок, необходимо меньше есть и больше двигаться. И если с движением все более-менее понятно, то с «меньше есть» у большинства людей возникают затруднения. Сколько есть и что есть?
+        Какой должна быть суточная норма калорий?
+        Ответить на последний вопрос вы можете узнать здесь.
+    </div>
+</div>
+<div onclick="disp(document.getElementById('his'))"  id="gray" style="display: none;"></div>
+<div class="his" style="display:none;" id="his">
+    <img class="close1" src="~/images/close.png" alt="" onclick="disp(document.getElementById('his'))" />
+    <label>История заказов</label>
+    <div class="histblock">
+        <div class="zn1">
+            <div class="bl1">Время</div>
+            <div class="bl1">Дата</div>
+            <div class="bl1">Блюдо/Продукт</div>
+            <div class="bl1">К-ство каллорий</div>
+        </div>
+        <div class="zn">
+            <div class="bl">22:00</div>
+            <div class="bl">02.09.2019</div>
+            <div class="bl">Spagetti</div>
+            <div class="bl">350 каллорий</div>
+        </div>
+    </div>
+</div>
+<div onclick="disp(document.getElementById('his2'))" id="gray" style="display: none;"></div>
+<div class="his2" style="display:none;" id="his2">
+    <img class="close1" src="~/images/close.png" alt="" onclick="disp(document.getElementById('his2'))" />
+    <label>Калькулятор каллорий</label>
+    <form class="form" name="f1">
+
+        <div class="tvoyhh">
+            <input type="text" placeholder="Рост(см)" name="email1" id="form_name" class="input3" />
+            <input type="text" placeholder="Вес(кг)" name="email1" id="form_sname" class="input3" />
+            <input type="text" placeholder="Возраст(лет)" name="email1" id="form_age" class="input3" />
+            <select name="select" id="form_pol1" class="input3">
+                <option selected ="selected">Пол</option>
+                <option>муж.</option>
+                <option>жен.</option>
+            </select>
+        </div>
+        <div class="itog">
+            <input type="button"  class="inputtt" value="Посчитать"  onclick="writesum()"/>
+            <label>Результат</label>
+            <div class="result">
+               <div class="res"  id="result1"> каллорий</div>
+            </div>
+            <div id="kh">Пользуйтесь подсчетом и будьте здоровы!</div>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript">
+    
+    function Auto()
+    {
+        var var1 = document.getElementById('form_name').value;
+        var var2 = document.getElementById('form_sname').value;
+        var var3 = document.getElementById('form_age').value;
+        var var4 = document.getElementById('form_pol1').value;
+        
+        var result = 0;
+
+        
+        if (var4 == "муж.") {
+            result = result + (var2 * 10) + (var1 * 6.25) - (5 * var3) + 5;
+        }
+        
+        if (var4 == "жен.") {
+
+            result = result + (var2 * 10) + (var1 * 6.25) - (5 * var3) - 161;
+        }
+        return result;
+    }
+    function writesum() {
+        document.getElementById('result1').innerHTML = Auto() + '  каллорий';
+    }
+    $(window).on('load', function () {
+        writesum();
+    });
+</script>

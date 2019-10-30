@@ -73,3 +73,120 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MedCaffe</title>
+        <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="~/css/font.css" rel="stylesheet" type="text/css" />
+        <title>@ViewData["Title"] - Lab2</title>
+        <environment include="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+            <link rel="stylesheet" href="~/css/site.css" />
+        </environment>
+        <environment exclude="Development">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        </environment>
+    </head>
+    <body>
+        <div style="text-decoration:none;
+        font-family:'Book Antiqua';
+        font-size:120%;
+        font-weight:900;" class="verh">
+            <button style="background: none;
+        border: 0;
+        box-sizing: border-box;
+        padding: 10px;
+        box-shadow: inset 0 0 0 2px #000;
+        color: #1429b8;
+        font-size: inherit;
+        font-weight: 700;
+        position: relative;
+        vertical-align: middle;
+        -webkit-text-stroke: 0.4px blue;" class="draw" onclick="@("window.location.href='" + @Url.Action("GetAll", "Kitchen") + "'");">
+                Меню
+            </button>
+            <button style="background: none;
+        border: 0;
+        box-sizing: border-box;
+        padding: 10px;
+        box-shadow: inset 0 0 0 2px #000;
+        color: #1429b8;
+        font-size: inherit;
+        font-weight: 700;
+        position: relative;
+        vertical-align: middle;
+        -webkit-text-stroke: 0.4px blue;" class="draw">
+                Категории
+            </button>
+            <div class="flip-container1" ontouchstart="this.classList.toggle('hover');">
+                <div class="flipper1">
+                    <div class="logo" onclick="location.href = '/Home/index'">
+                        <!-- front content -->
+                    </div>
+                    <div class="logo1" onclick="location.href = 'https://localhost:44344/Home/index'"></div>
+                </div>
+            </div>
+            <button style="background: none;
+        border: 0;
+        box-sizing: border-box;
+        padding: 10px;
+        box-shadow: inset 0 0 0 2px #000;
+        color: #1429b8;
+        font-size: inherit;
+        font-weight: 700;
+        position: relative;
+        vertical-align: middle;
+        -webkit-text-stroke: 0.4px blue;" class="draw" onclick="@("window.location.href='" + "Identity/Account/Manage/Index" + "'");">
+                Личный кабинет
+            </button>
+            <button style="background: none;
+        border: 0;
+        box-sizing: border-box;
+        padding: 10px;
+        box-shadow: inset 0 0 0 2px #000;
+        color: #1429b8;
+        font-size: inherit;
+        font-weight: 700;
+        position: relative;
+        vertical-align: middle;
+        -webkit-text-stroke: 0.4px blue;" class="draw" onclick="@("window.location.href='" + @Url.Action("Login", "Account") + "'");">
+                Вход
+            </button>
+        </div>
+        <partial name="_CookieConsentPartial" />
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+
+        </div>
+        <environment include="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+        </environment>
+        <environment exclude="Development">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+            </script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+        </environment>
+        @RenderSection("Scripts", required: false)
+    </body>
+    </html>*@
+

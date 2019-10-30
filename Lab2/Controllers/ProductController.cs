@@ -27,16 +27,20 @@ namespace Lab2.Controllers
 
        // [Authorize(Roles ="Admin")]
         [HttpPost]
-        public  void Create(Product product)
+        public void Create([FromBody]Product product)
         {
-           
-            if(product!=null)
-             service.Create(product);
+            if (User.Identity.Name == "Dima")
+            {
+                if (product != null)
+                    service.Create(product);
+            }
         }
 
         public IActionResult Create()
         {
-            return View();
+            if (User.Identity.Name == "Dima")
+                return View();
+            return NotFound();
         }
 
         [HttpGet]
@@ -61,29 +65,34 @@ namespace Lab2.Controllers
             return NotFound();                       
         }
 
-        [Authorize(Roles ="Admin")]
+        
         [HttpPost]
         public void Edit(Product product)
         {
-            if (ModelState.IsValid)
-                service.Edit(product);
+            if (User.Identity.Name == "Dima")
+            {
+                if (ModelState.IsValid)
+                    service.Edit(product);
+            }
         }
 
-        [Authorize(Roles = "Admin")]
+        
         public IActionResult Edit(int id)
         {
-            Product product = service.GetProduct(id).Result;
-            if (product != null)
-                return View(product);
+            if (User.Identity.Name == "Dima")
+            {
+                Product product = service.GetProduct(id).Result;
+                if (product != null)
+                    return View(product);
+                return NotFound();
+            }
             return NotFound();
         }
 
         public IActionResult ToKitchenController()
         {
             HttpContext.Session.Set("ListOfProducts", service.GetProductAll().Result);
-            //TempData.Serialize("ListOfProducts", service.GetProductAll().Result);
-            //TempData["ListOfProducts"] = service.GetProductAll();
-           // TempData.Keep();
+         
             return RedirectToAction("Create", "Kitchen");
         }
        
