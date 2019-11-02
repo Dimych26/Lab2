@@ -43,12 +43,24 @@ namespace Lab2
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<User>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<User>()
+            //    .AddRoles<IdentityRole>()
+            //    .AddDefaultUI()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+            services.AddIdentity<User, IdentityRole>()
+               .AddRoleManager<RoleManager<IdentityRole>>()
+               .AddDefaultUI()
+               .AddDefaultTokenProviders()
+               .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //.AddEntityFrameworkStores<ApplicationDbContext>();
             //services.AddIdentity<User, IdentityRole>()
-            //        .AddEntityFrameworkStores<ApplicationDbContext>()
-            //        .AddDefaultTokenProviders();
+            //        .AddRoleManager<RoleManager<IdentityRole>>()
+            //        //.AddDefaultUI()
+            //        //.AddDefaultTokenProviders()
+            //        .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddTransient<IKitchen, Kitchen>();
             services.AddTransient<IProductService, ProductService>();
@@ -68,14 +80,7 @@ namespace Lab2
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
             services.AddMemoryCache();
             services.AddSession();
-            //(options =>
-            //{
-            //    // Set a short timeout for easy testing.
-            //    options.IdleTimeout = TimeSpan.FromSeconds(3600);
-            //    options.Cookie.IsEssential = true;
-
-
-            //});
+         
 
         }
 

@@ -62,8 +62,8 @@
             <div class="nad9" onclick="@("window.location.href='" + @Url.Action("GetTopDishes", "Kitchen") + "'");">ТОП </div>
         </div>
         <div class="str" onclick="disp(document.getElementById('fir'))"></div>
-        <div style="display: none;" class="fir" id="fir" onclick="@("window.location.href='" + @Url.Action("GetAll", "Kitchen") + "'");">Блюдо</div>
-        <div style="display: none;" class="sec" id="sec" onclick="@("window.location.href='" + @Url.Action("GetProductAll", "Product") + "'");">Продукты</div>
+        <div style="display: none;" class="fir" id="fir" onclick="category('cofeyni')">Блюдо</div>                                          <!--"@("window.location.href='" + @Url.Action("GetAll", "Kitchen") + "'");"-->
+        <div style="display: none;" class="sec" id="sec" onclick="category('cofeyni')">Продукты</div>                                       <!--"@("window.location.href='" + @Url.Action("GetProductAll", "Product") + "'");"-->
         <div class="product-block">
             @foreach (var item in Model.Dishes)
             {
@@ -86,7 +86,7 @@
 
                             <div class="name">@item.Name</div>
 
-                           
+
                             <div class="product-dop">@item.Calories</div>
                             <div id="vortu">
                                 <p class="pizda"><input class="ps_item.Id+color" name="color1" type="checkbox" value="item1.Color"> item1.Color</p>
@@ -167,18 +167,18 @@
                             </div>
                         </div>
 
-                    
-<div class="product-image">
-                                    <img src = "/image/item.Image" alt="forest">
-                                </div>
-                                <div style = "margin-top: 22%;" class="grupovuha">
-                                    <div class="product-name">item.Brand</div>
-                                    <div class="product-price">item.Price грн</div>
-                                </div>
+
+                        <div class="product-image">
+                            <img src="/image/item.Image" alt="forest">
+                        </div>
+                        <div style="margin-top: 22%;" class="grupovuha">
+                            <div class="product-name">item.Brand</div>
+                            <div class="product-price">item.Price грн</div>
+                        </div>
 
 
 
-                            }
+                    }
                     }
 
                 </div>
@@ -372,17 +372,29 @@
             }
         });
     }
-    function category(top) {
-        if (top) {
+   
+    
+    function category(s) {
+        if (s == 'all') {
             localStorage.setItem('toit', s);
-            window.location.replace("/Home/index1");
+            window.location.replace("/Home/index");
         }
         else {
             localStorage.setItem('toit', s);
-            window.location.replace("/Home/index1?cat=" + s);
+            window.location.replace("/Home/index? cat = " + s);
         }
 
     }
+
+    
+    $(window).on('load', function () {
+        if (localStorage.getItem('toit') != null) {
+            $('html, body').animate({
+                scrollTop: $('.catalog').offset().top - 100
+            }, 1000);
+            this.localStorage.removeItem('toit');
+        }
+    });
     function getCart() {
         return JSON.parse(localStorage.getItem('сart'));
     }

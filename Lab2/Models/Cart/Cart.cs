@@ -20,30 +20,7 @@ namespace Lab2.Models.Cart
         public string CartId { get; set; }
         private List<CartItem> lineCollection = new List<CartItem>();
 
-        public void AddItem(Dish dish, int quantity)
-        {
-            CartItem line = lineCollection
-                .Where(g => g.Dish.Id == dish.Id)
-                .FirstOrDefault();
-
-            if (line == null)
-            {
-                lineCollection.Add(new CartItem
-                {
-                    Dish = dish,
-                    Quantity = quantity
-                });
-            }
-            else
-            {
-                line.Quantity += quantity;
-            }
-        }
-
-        public void RemoveLine(Dish dish)
-        {
-            lineCollection.RemoveAll(l => l.Dish.Id == dish.Id);
-        }
+          
 
         public double ComputeTotalValue()
         {
@@ -72,14 +49,29 @@ namespace Lab2.Models.Cart
             return new Cart(context) { CartId = shopCartId };
         }
 
-        public void AddToCart(Dish dish, int quantity)
+        public void AddToCart(Dish dish)
         {
-            context.CartItems.Add(new CartItem()
+            var item = context.CartItems.Where(c => c.ShopCartId == CartId).Include(s => s.Dish).ToList();
+
+            
+            if (!item.Exists(c => c.Dish.Equals(dish)))
             {
-                ShopCartId = CartId,
-                Dish = dish
-            });
-            context.SaveChanges();
+                context.CartItems.Add(new CartItem()
+                {
+                    ShopCartId = CartId,
+                    Dish = dish,
+                    Quantity = 1,
+                    Price=(int)dish.Price
+                });
+                context.SaveChanges();
+            }
+            else
+            {
+                item.ForEach(i => i.Quantity++);
+                item.ForEach(i => context.Update(i));
+                context.SaveChanges();
+            }
+
         }
         public List<CartItem> GetCartItems()
         {
@@ -88,14 +80,33 @@ namespace Lab2.Models.Cart
 
         public void RemoveAllFromCart()
         {
-           var some= context.CartItems.Where(c => c.ShopCartId == CartId).Include(s => s.Dish).ToList();
+            var some = context.CartItems.Where(c => c.ShopCartId == CartId).Include(s => s.Dish).ToList();
+
             for (int i = 0; i < some.Count(); i++)
             {
-                
                 context.CartItems.Remove(some[i]);
             }
             context.SaveChanges();
-            //.Include(s => s.Dish).ToList();
+            
+        }
+
+        public void RemoveLine(Dish dish)
+        {
+            var some = GetCartItems();
+           
+            if(some.Exists(c => c.Dish.Equals(dish)))
+            {
+                for(int i=0;i<some.Count;i++)
+                {
+                    if(some[i].Dish.Equals(dish))
+                    {
+                        context.CartItems.Remove(some[i]);
+                    }
+                }
+             
+            }
+            
+            context.SaveChanges();
         }
     }
 

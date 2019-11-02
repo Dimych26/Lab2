@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Lab2.Models;
 using Lab2.ViewModels.Home;
 using Lab2.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace Lab2.Controllers
 {
@@ -14,38 +15,53 @@ namespace Lab2.Controllers
     {
         IProductService service;
         IKitchen kitchen;
-        public HomeController(IProductService service, IKitchen kitchen)
+        UserManager<User> manager;
+        public HomeController(IProductService service, IKitchen kitchen,UserManager<User> manager)
         {
             this.service = service;
             this.kitchen = kitchen;
+            this.manager = manager;
         }
-        public IActionResult Index(bool Top,bool New)
+        public IActionResult Index(bool category)//bool Top,bool New)
         {
-            IndexViewModel model = new IndexViewModel(service,kitchen);
+            IndexViewModel model; 
 
-            //if (category == false )
-            //{
-            //    IEnumerable<TovarDTO> tovarDTOs = it.GetAll();
-            //    var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TovarDTO, TovarViewModel>()).CreateMapper();
-            //    var users = mapper.Map<IEnumerable<TovarDTO>, List<TovarViewModel>>(tovarDTOs);
-            //    return View(users);
-            //}
-            //else
-            //{
-            //    IEnumerable<TovarDTO> tovarDTOs = it.GetAll();
-            //    List<TovarDTO> dTOs = new List<TovarDTO>();
-            //    foreach (var item in tovarDTOs)
-            //    {
-            //        if (item.Top == category || item.New == category)
-            //        {
-            //            dTOs.Add(item);
-            //        }
-            //    }
-            //    var mapper = new MapperConfiguration(cfg => cfg.CreateMap<TovarDTO, TovarViewModel>()).CreateMapper();
-            //    var users = mapper.Map<List<TovarDTO>, List<TovarViewModel>>(dTOs);
-            //    return View(users);
-            //}
-            return View(model);
+            if (category == false)
+            {
+             
+                model = new IndexViewModel(service,kitchen);
+                return View(model);
+            }
+            else
+            {
+                
+                List<Dish> ViewDishes = new List<Dish>();
+                List<Product> ViewProducts = new List<Product>();
+                IEnumerable<Dish> dishes = kitchen.GetDishes().Result;
+                IEnumerable<Product> products = service.GetProductAll().Result;
+                foreach (var item in dishes)
+                {
+                    if (item.Top == category || item.New == category)
+                    {
+                        ViewDishes.Add(item);
+                    }
+                }
+                foreach (var item in products)
+                {
+                    if (item.Top == category || item.New == category)
+                    {
+                        ViewProducts.Add(item);
+                    }
+                }
+                model = new IndexViewModel
+                {
+                    Dishes = ViewDishes,
+                    Products = ViewProducts
+                };
+                
+                return View(model);
+            }
+           
         }
 
         public ActionResult basket(string ids)
@@ -108,8 +124,13 @@ namespace Lab2.Controllers
         }
         public IActionResult AdPage()
         {
-           string a= Request.Query["name"].ToString();
+           
             return View();
+        }
+
+        public async Task<IList<User>> GetUserRoles()
+        {
+            return await manager.GetUsersInRoleAsync("admin");
         }
     }
 }

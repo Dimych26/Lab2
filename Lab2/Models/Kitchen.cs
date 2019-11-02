@@ -22,7 +22,6 @@ namespace Lab2.Models
         }
         public Storage Storage => new Storage(productService);
 
-        [Authorize(Roles ="Admin")]
         public string CreateDish(List<Product> products,string Name)
         {
 
@@ -60,7 +59,7 @@ namespace Lab2.Models
             return response;
         }
 
-        [Authorize(Roles ="Admin")]
+        
         public void EditDish(Dish dish)
         {
             db.Dishes.Update(dish);

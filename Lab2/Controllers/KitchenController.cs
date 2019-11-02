@@ -70,7 +70,7 @@ namespace Lab2.Controllers
             return NotFound();
         }
 
-
+        [Authorize(Roles ="admin")]//IT`IS WOOOOOOOOOOOOOOOOOOOORK DON`T TOUCH
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Dish> dishes = await kitchen.GetDishes(); //await db.Dishes.ToListAsync();
@@ -78,7 +78,7 @@ namespace Lab2.Controllers
                 return View(dishes);
             return NotFound();
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetDish(int? id)
         {
             if (id != null)

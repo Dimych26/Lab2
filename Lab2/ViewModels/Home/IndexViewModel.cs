@@ -20,6 +20,10 @@ namespace Lab2.ViewModels.Home
             GetDishes();
             GetProduct();
         }
+        public IndexViewModel()
+        {
+
+        }
 
         private void GetProduct()
         {

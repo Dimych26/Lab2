@@ -50,15 +50,15 @@ namespace Lab2.Controllers
            
             if (dish != null)
             {
-                cart.AddToCart(dish, 1);
+                cart.AddToCart(dish);
                
             }
 
             return RedirectToAction("Index");
 
         }
-        [HttpPost]
-        public IActionResult RemoveFromCart(int dishId)
+        
+        public IActionResult RemoveElementFromCart(int dishId)
         {
             Dish dish = service.GetDish(dishId).Result;
 
